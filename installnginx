@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#Installs nginx to /usr/local/nginx/sbin/nginx with pagespeed
+#run as root
+
+#Install Dependancies
+apt-get install libc6 libpcre3 libssl0.9.8 zlib1g lsb-base
+cd /var/tmp
+wget https://github.com/pagespeed/ngx_pagespeed/archive/v1.7.30.3-beta.zip
+unzip v1.7.30.3-beta.zip # or unzip v1.7.30.3-beta
+cd ngx_pagespeed-1.7.30.3-beta/
+wget https://dl.google.com/dl/page-speed/psol/1.7.30.3.tar.gz
+tar -xzvf 1.7.30.3.tar.gz # expands to psol/
+cd /var/tmp
+wget http://nginx.org/download/nginx-1.5.10.tar.gz
+tar -xvzf nginx-1.5.10.tar.gz
+cd nginx-1.5.10
+./configure --with-http_ssl_module --conf-path=/etc/nginx/nginx.conf --add-module=/var/tmp/ngx_pagespeed-1.7.30.3-beta --error-log-path=/var/log/nginx_error.log --http-log-path=/var/log/nginx_access.log --with-ipv6 --with-http_realip_module --with-http_mp4_module --with-http_stub_status_module --with-http_addition_module
+make
+make install
+cp -f /usr/local/nginx/sbin/nginx /usr/local/sbin/
