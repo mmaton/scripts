@@ -1,5 +1,7 @@
 #!/bin/sh
- 
+#Auto DNS Tunnler for OSX (make sure you have iodine server and TUN/TAP installed), stick it in /usr/local/bin and chmod +x it 
+#Configure to your liking, connect to a paid wifi service and fire it up!
+#Hit enter when done to close the connection and remove local proxy
 #### EDIT HERE ####
  
 # Path to your iodine executable
