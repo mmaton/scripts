@@ -1,0 +1,44 @@
+#!/bin/sh
+ 
+#### EDIT HERE ####
+ 
+# Path to your iodine executable
+IOD="iodine"
+ 
+# Your top domain
+IOTD=""
+ 
+# You may choose to store the password in this script or enter it every time
+IOPASS=""
+ 
+# You might need to change this if you use linux, or already have
+# tunnels running. In linux iodine uses dnsX and fbsd/osX use tunX
+# X represents how many tunnel interfaces exist, starting at 0
+IODEV="tun0"
+ 
+# The IP your iodined server uses inside the tunnel
+# The man page calls this tunnel_ip
+IOIP="10.0.0.1"
+ 
+SSH_FORWARDING_PORT="4000"
+ 
+# Valid user account on the server
+SSH_USER="root"
+ 
+#### STOP EDITING ####
+NS=`grep nameserver /etc/resolv.conf|head -1|awk '{print $2}'`
+[ -z $IOPASS ] && echo "Enter your iodine password"
+[ -z $IOPASS ] && sudo $IOD $IOTD
+[ -n $IOPASS ] && sudo $IOD -P "${IOPASS}" $IOTD
+if ps auxw|grep iodine|grep -v grep
+ssh -CTfnN2 $SSH_USER@$IOIP -D $SSH_FORWARDING_PORT
+sudo networksetup -setsocksfirewallproxy "Wi-Fi" localhost 4000
+then echo "Press enter when you are done with iodine"
+read yourmind
+sudo kill -9 `ps auxw|grep iodine|grep -v grep|awk '{print $2}'`
+sudo kill -9 `ps auxw|grep "ssh -CTfnN2 root@$IOIP -D $SSH_FORWARDING_PORT" |grep -v grep|awk '{print $2}'`
+sudo networksetup -setsocksfirewallproxystate "Wi-Fi" off
+else echo there was a problem starting iodine
+echo try running it manually to troubleshoot
+fi
+exit
