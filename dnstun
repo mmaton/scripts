@@ -34,7 +34,7 @@ NS=`grep nameserver /etc/resolv.conf|head -1|awk '{print $2}'`
 [ -n $IOPASS ] && sudo $IOD -P "${IOPASS}" $IOTD
 if ps auxw|grep iodine|grep -v grep
 ssh -CTfnN2 $SSH_USER@$IOIP -D $SSH_FORWARDING_PORT
-sudo networksetup -setsocksfirewallproxy "Wi-Fi" localhost 4000
+sudo networksetup -setsocksfirewallproxy "Wi-Fi" localhost $SSH_FORWARDING_PORT
 then echo "Press enter when you are done with iodine"
 read yourmind
 sudo kill -9 `ps auxw|grep iodine|grep -v grep|awk '{print $2}'`
